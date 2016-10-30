@@ -1,3 +1,4 @@
+// calculates when blood sugar hit above/below 150
 function calculateTimeToGlycation(previousResult, currentResult, previousTimestamp, currentTimeStamp) {
     let glycationTime = new Date(previousTimestamp);
 

@@ -16,7 +16,7 @@ module.exports = {
 };
 
 function getAllBloodSugar(req, res, next) {
-    db.any('select * from bloodsugarentries')
+    db.any('select * from bloodsugarentries where time_stamp::date = now()::date and time_stamp::time <= now()::time')
         .then((data)=> { 
             req.data = data;
             next();

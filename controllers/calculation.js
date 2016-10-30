@@ -1,6 +1,6 @@
 // HELPER FUNCTIONS
 
-function getAllWithinHour(timestamp, entries) {
+function getAllWithinHour(timestamp, entries) {  // get all relevant exercise within an hour, food within 2 hours
     let entriesWithinHour = [];
 
     let oneHourBefore = new Date(timestamp);
@@ -20,7 +20,7 @@ function getAllWithinHour(timestamp, entries) {
     return entriesWithinHour;
 }
 
-function finish(resultObj, lastTimestamp) {
+function finish(resultObj, lastTimestamp) { // normalizes blood sugar back to 80 if last timestamp blood sugar is above 80
     let time = lastTimestamp;
     while(resultObj[time] > 80) {
         let nextHour = new Date(time);
@@ -71,7 +71,7 @@ function getChanges(previousResult, minutesSinceLastCalculation, activityPrior) 
 }
 
 // MAIN FUNCTIONS
-function getRelevantTimes(entries) {
+function getRelevantTimes(entries) { // makes sure we calculate blood sugar in one hour and two hours (food only)
     let time = [];
 
     entries.map((entry) => {
@@ -112,16 +112,16 @@ function generateMeasurements(time, entries) {
             let previousTimestamp = time[i-1];
             let previousResult = resultObj[previousTimestamp];
 
-            if (activityPrior.length === 0) {
+            if (activityPrior.length === 0) { // no exercise within an hour, no food within 2 hours, normalize
                 let unitsFrom80;
                 resultObj[timeStamp] = getNormalization(previousResult, minutesSinceLastCalculation);
-            } else {
+            } else { // calculate activity effect on blood sugar
                 resultObj[timeStamp] = getChanges(previousResult, minutesSinceLastCalculation, activityPrior);
             }
         }
     }
 
-    resultObj = finish(resultObj, time[time.length -1]);   
+    resultObj = finish(resultObj, time[time.length -1]); // add to resultObj progress blood sugar back to normal
     return Promise.resolve(resultObj); 
 }
 
